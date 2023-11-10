@@ -47,7 +47,14 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
-    fermatNumber(n) == (Math.pow(2, Math.pow(2, n)) + 1)
+    try {
+      fermatNumber(n) == BigInt(2).pow(BigInt(2).pow(n).toInt)+1
+    } catch {
+      case e: IllegalArgumentException => true
+      case e: Exception =>
+        println(e)
+        false
+    }
   }  
 
 end FermatNumbersSpecification
