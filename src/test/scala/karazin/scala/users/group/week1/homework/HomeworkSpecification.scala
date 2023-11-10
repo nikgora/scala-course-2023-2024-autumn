@@ -17,19 +17,19 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   import `Boolean Operators`._
 
   property("not") = forAll { (b: Boolean) =>
-    not(b) == !b
+    not(b) == (!b)
   }
 
   property("and") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
     
-    and(left, right) == left && right
+    and(left, right) == (left && right)
   }
 
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
     
-    or(left, right) == left || right
+    or(left, right) == (left || right)
   }   
 
 end BooleanOperatorsSpecification
@@ -47,7 +47,7 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
-    fermatNumber(n) == Math.pow(2, Math.pow(2, 2)) + 1
+    fermatNumber(n) == (Math.pow(2, Math.pow(2, n)) + 1)
   }  
 
 end FermatNumbersSpecification
