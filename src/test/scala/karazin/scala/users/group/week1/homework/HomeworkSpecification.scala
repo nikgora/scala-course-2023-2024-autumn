@@ -47,14 +47,12 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
-    try {
-      fermatNumber(n) == BigInt(2).pow(BigInt(2).pow(n).toInt)+1
+    if (n<0) try {
+      fermatNumber(n)
     } catch {
       case e: IllegalArgumentException => true
-      case e: Exception =>
-        println(e)
-        false
     }
+    else fermatNumber(n) == BigInt(2).pow(BigInt(2).pow(n).toInt)+1
   }  
 
 end FermatNumbersSpecification
@@ -63,7 +61,7 @@ object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence"
   import `Look-and-say Sequence`._
   import arbitraries.given Arbitrary[Int]
 
-  property("fermatNumber") = forAll { (n: Int) =>
+  property("lookAndSaySequenceElement") = forAll { (n: Int) =>
     lookAndSaySequenceElement(n) == 42
   }  
 
