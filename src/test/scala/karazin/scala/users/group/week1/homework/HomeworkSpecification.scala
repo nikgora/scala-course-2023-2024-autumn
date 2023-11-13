@@ -49,6 +49,7 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   property("fermatNumber") = forAll { (n: Int) =>
     if (n<0) try {
       fermatNumber(n)
+      false
     } catch {
       case e: IllegalArgumentException => true
     }
