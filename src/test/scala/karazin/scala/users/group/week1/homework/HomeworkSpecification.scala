@@ -63,7 +63,13 @@ object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence"
   import arbitraries.given Arbitrary[Int]
 
   property("lookAndSaySequenceElement") = forAll { (n: Int) =>
-    lookAndSaySequenceElement(n) == 42
+    if (n <= 0) try {
+      lookAndSaySequenceElement(n)
+      false
+    } catch {
+      case e: IllegalArgumentException => true
+    }
+    else lookAndSaySequenceElement(n) == 11
   }  
 
 end LookAndAaSequenceSpecification

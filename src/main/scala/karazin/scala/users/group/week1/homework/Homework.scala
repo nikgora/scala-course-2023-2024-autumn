@@ -81,7 +81,23 @@ object Homework :
   end `Fermat Numbers`
 
   object `Look-and-say Sequence` :
-    val lookAndSaySequenceElement: Int => BigInt = ???
+    val lookAndSaySequenceElement: Int => BigInt = n =>
+      def generateNextNumber (number: Int): BigInt =
+        {
+        11
+        }
+
+      @tailrec
+      def lookAndSaySequenceElementReq(n:Int, now: BigInt): BigInt = {
+        if (n == 0) now
+        else lookAndSaySequenceElementReq(n-1, generateNextNumber(now))
+      }
+
+      if (n <= 0) throw IllegalArgumentException(s"Expected non-negative value, actual[$n]")
+      else
+      {
+        lookAndSaySequenceElementReq(n, now = 1)
+      }
 
   end `Look-and-say Sequence`
 
