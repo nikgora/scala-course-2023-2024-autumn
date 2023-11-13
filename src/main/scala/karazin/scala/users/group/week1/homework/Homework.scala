@@ -42,41 +42,21 @@ object Homework :
 
     val int = 42
 
-    def not(b: Boolean): Boolean =
-      if (b) false
-      else true // here is my greatest solution
+    def not(b: Boolean): Boolean = ??? // here is my greatest solution
 
-    def and(left: Boolean, right: Boolean): Boolean =
-      if (left) right
-      else false
+    def and(left: Boolean, right: Boolean): Boolean = ???
 
-    def or(left: Boolean, right: Boolean): Boolean =
-      if (left)  true
-      else right
+    def or(left: Boolean, right: Boolean): Boolean = ???
 
   end `Boolean Operators`
 
   object `Fermat Numbers` :
 
-    val multiplication: (BigInt, BigInt) => BigInt = (a,b) =>
-      @tailrec
-      def multiplicationReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
-        if (b == 0) res
-        else  multiplicationReq (a, b-1, a+res)
+    val multiplication: (BigInt, BigInt) => BigInt = ???
 
-      multiplicationReq (a, b, res = 0)
+    val power: (BigInt, BigInt) => BigInt = ???
 
-    val power: (BigInt, BigInt) => BigInt = (a, b) =>
-      @tailrec
-      def  powerReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
-        if (b == 0) res
-        else powerReq(a, b-1, multiplication(res, a))
-
-      powerReq (a, b, res = 1)
-
-    val fermatNumber: Int => BigInt = n =>
-      if (n<0) throw IllegalArgumentException(s"Expected non-negative value, actual[$n]")
-      else power(2, power(2, n)) + 1
+    val fermatNumber: Int => BigInt = ???
 
   end `Fermat Numbers`
 
