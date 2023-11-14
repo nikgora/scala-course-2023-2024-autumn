@@ -103,7 +103,7 @@ object Homework :
           if (number == 0) result
           else
             val c = countDigites(number,number.mod(10).toInt,count = 0)
-            generateNextNumber(number / (BigInt(10).pow(c)), (c*10+number.mod(10)*1)+result*100)
+            generateNextNumber(number / BigInt(10).pow(c), (c*10+number.mod(10)*1)+result*100)
         }
 
       @tailrec
