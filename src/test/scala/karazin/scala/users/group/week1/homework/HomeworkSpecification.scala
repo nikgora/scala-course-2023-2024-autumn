@@ -9,7 +9,7 @@ object HomeworkSpecification extends Properties("Homework"):
 
   include(BooleanOperatorsSpecification)
   include(FermatNumbersSpecification)
-  include(LookAndAaSequenceSpecification)
+  include(LookAndSaySequenceSpecification)
 
 end HomeworkSpecification
 
@@ -58,18 +58,36 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
 
 end FermatNumbersSpecification
 
-object LookAndAaSequenceSpecification extends Properties("Look-and-say Sequence"):
+object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence"):
   import `Look-and-say Sequence`._
   import arbitraries.given Arbitrary[Int]
 
   property("lookAndSaySequenceElement") = forAll { (n: Int) =>
+    val expectedResults = Map(
+      1 -> BigInt("1"),
+      2 -> BigInt("11"),
+      3 -> BigInt("21"),
+      4 -> BigInt("1211"),
+      5 -> BigInt("111221"),
+      6 -> BigInt("312211"),
+      7 -> BigInt("13112221"),
+      8 -> BigInt("1113213211"),
+      9 -> BigInt("31131211131221"),
+      10 -> BigInt("13211311123113112211"),
+      11 -> BigInt("11131221133112132113212221"),
+      12 -> BigInt("3113112221232112111312211312113211"),
+      13 -> BigInt("1321132132111213122112311311222113111221131221"),
+      14 -> BigInt("11131221131211131231121113112221121321132132211331222113112211"),
+      15 -> BigInt("311311222113111231131112132112311321322112111312211312111322212311322113212221"),
+    )
+
     if (n <= 0) try {
       lookAndSaySequenceElement(n)
       false
     } catch {
       case e: IllegalArgumentException => true
     }
-    else lookAndSaySequenceElement(n) == 11
+    else lookAndSaySequenceElement(n)==expectedResults.get(n).getOrElse(BigInt(0))
   }  
 
-end LookAndAaSequenceSpecification
+end LookAndSaySequenceSpecification

@@ -82,15 +82,34 @@ object Homework :
 
   object `Look-and-say Sequence` :
     val lookAndSaySequenceElement: Int => BigInt = n =>
-      def generateNextNumber (number: Int): BigInt =
+
+      @tailrec
+      def reverseWithTwoNumbers(number: BigInt, result : BigInt): BigInt=
+      {
+        if (number ==0) result
+        else reverseWithTwoNumbers(number/100, result*100+number.mod(100))
+      }
+
+      @tailrec
+      def countDigites(number: BigInt, prev: Int, count: Int): Int={
+        if (number == 0)count
+        else if (prev != number.mod(10).toInt) count
+        else countDigites(number/10, number.mod(10).toInt, count+1)
+      }
+
+      @tailrec
+      def generateNextNumber (number: BigInt, result : BigInt): BigInt =
         {
-        11
+          if (number == 0) result
+          else
+            val c = countDigites(number,number.mod(10).toInt,count = 0)
+            generateNextNumber(number / (BigInt(10).pow(c)), (c*10+number.mod(10)*1)+result*100)
         }
 
       @tailrec
       def lookAndSaySequenceElementReq(n:Int, now: BigInt): BigInt = {
-        if (n == 0) now
-        else lookAndSaySequenceElementReq(n-1, generateNextNumber(now))
+        if (n == 1) now
+        else lookAndSaySequenceElementReq(n-1, reverseWithTwoNumbers(generateNextNumber(now,result = 0),result = 0))
       }
 
       if (n <= 0) throw IllegalArgumentException(s"Expected non-negative value, actual[$n]")
