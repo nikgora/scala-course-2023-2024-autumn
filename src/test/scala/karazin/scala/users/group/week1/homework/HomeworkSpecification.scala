@@ -1,9 +1,9 @@
 package karazin.scala.users.group.week1.homework
 
-import org.scalacheck._
-import Prop.{forAll, propBoolean}
-import Homework._
+import karazin.scala.users.group.week1.homework.Homework.*
 import karazin.scala.users.group.week1.homework.arbitraries
+import org.scalacheck.*
+import org.scalacheck.Prop.{forAll, propBoolean}
 
 object HomeworkSpecification extends Properties("Homework"):
 
@@ -14,7 +14,8 @@ object HomeworkSpecification extends Properties("Homework"):
 end HomeworkSpecification
 
 object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
-  import `Boolean Operators`._
+
+  import `Boolean Operators`.*
 
   property("not") = forAll { (b: Boolean) =>
     not(b) == (!b)
@@ -22,20 +23,21 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
 
   property("and") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
-    
+
     and(left, right) == (left && right)
   }
 
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
-    
+
     or(left, right) == (left || right)
-  }   
+  }
 
 end BooleanOperatorsSpecification
 
 object FermatNumbersSpecification extends Properties("Fermat Numbers"):
-  import `Fermat Numbers`._
+
+  import `Fermat Numbers`.*
   import arbitraries.given Arbitrary[Int]
 
   property("multiplication") = forAll { (left: Int, right: Int) =>
@@ -47,39 +49,46 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
-    if (n<0) try {
+    if (n < 0) try {
       fermatNumber(n)
       false
     } catch {
       case e: IllegalArgumentException => true
     }
-    else fermatNumber(n) == BigInt(2).pow(BigInt(2).pow(n).toInt)+1
-  }  
+    else fermatNumber(n) == BigInt(2).pow(BigInt(2).pow(n).toInt) + 1
+  }
 
 end FermatNumbersSpecification
 
 object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence"):
-  import `Look-and-say Sequence`._
+
+  import `Look-and-say Sequence`.*
   import arbitraries.given Arbitrary[Int]
 
+  import scala.annotation.tailrec
+
+
+  @tailrec
+  private def loop(n: Int, num: String): String = {
+    if (n <= 0) num else loop(n - 1, lookandsay(num))
+  }
+
+  private def lookandsay(number: String): String = {
+    val result = new StringBuilder
+
+    @tailrec
+    def loop(numberString: String, repeat: Char, times: Int): String =
+      if (numberString.isEmpty) result.toString()
+      else if (numberString.head != repeat) {
+        result.append(times).append(repeat)
+        loop(numberString.tail, numberString.head, 1)
+      } else loop(numberString.tail, numberString.head, times + 1)
+
+    loop(number.tail + " ", number.head, 1)
+  }
+
+
   property("lookAndSaySequenceElement") = forAll { (n: Int) =>
-    val expectedResults = Map(
-      1 -> BigInt("1"),
-      2 -> BigInt("11"),
-      3 -> BigInt("21"),
-      4 -> BigInt("1211"),
-      5 -> BigInt("111221"),
-      6 -> BigInt("312211"),
-      7 -> BigInt("13112221"),
-      8 -> BigInt("1113213211"),
-      9 -> BigInt("31131211131221"),
-      10 -> BigInt("13211311123113112211"),
-      11 -> BigInt("11131221133112132113212221"),
-      12 -> BigInt("3113112221232112111312211312113211"),
-      13 -> BigInt("1321132132111213122112311311222113111221131221"),
-      14 -> BigInt("11131221131211131231121113112221121321132132211331222113112211"),
-      15 -> BigInt("311311222113111231131112132112311321322112111312211312111322212311322113212221"),
-    )
 
     if (n <= 0) try {
       lookAndSaySequenceElement(n)
@@ -87,7 +96,7 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
     } catch {
       case e: IllegalArgumentException => true
     }
-    else lookAndSaySequenceElement(n)==expectedResults.getOrElse(n, BigInt(0))
-  }  
+    else lookAndSaySequenceElement(n).toString() == loop(n - 1, "1")
+  }
 
 end LookAndSaySequenceSpecification
