@@ -86,7 +86,7 @@ object Homework :
       @tailrec
       def reverseWithTwoNumbers(number: BigInt, result : BigInt): BigInt=
       {
-        if (number ==0) result
+        if (number == 0) result
         else reverseWithTwoNumbers(number/100, result*100+number.mod(100))
       }
 
