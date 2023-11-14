@@ -87,7 +87,7 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
     } catch {
       case e: IllegalArgumentException => true
     }
-    else lookAndSaySequenceElement(n)==expectedResults.get(n).getOrElse(BigInt(0))
+    else lookAndSaySequenceElement(n)==expectedResults.getOrElse(n, BigInt(0))
   }  
 
 end LookAndSaySequenceSpecification
