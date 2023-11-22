@@ -1,6 +1,7 @@
 package karazin.scala.users.group.week1.homework
 
 import scala.annotation.tailrec
+
 /**
  * Preface
  * Implement all the things with ???.
@@ -36,11 +37,9 @@ import scala.annotation.tailrec
  * For more details @see https://en.wikipedia.org/wiki/Kolakoski_sequence
  */
 
-object Homework :
+object Homework:
 
-  object `Boolean Operators` :
-
-    val int = 42
+  object `Boolean Operators`:
 
     def not(b: Boolean): Boolean =
       if (b) false
@@ -51,72 +50,67 @@ object Homework :
       else false
 
     def or(left: Boolean, right: Boolean): Boolean =
-      if (left)  true
+      if (left) true
       else right
 
   end `Boolean Operators`
 
-  object `Fermat Numbers` :
+  object `Fermat Numbers`:
 
-    val multiplication: (BigInt, BigInt) => BigInt = (a,b) =>
+    val multiplication: (BigInt, BigInt) => BigInt = (a, b) =>
       @tailrec
       def multiplicationReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
         if (b == 0) res
-        else  multiplicationReq (a, b-1, a+res)
+        else multiplicationReq(a, b - 1, a + res)
 
-      multiplicationReq (a, b, res = 0)
+      multiplicationReq(a, b, res = 0)
 
     val power: (BigInt, BigInt) => BigInt = (a, b) =>
       @tailrec
-      def  powerReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
+      def powerReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
         if (b == 0) res
-        else powerReq(a, b-1, multiplication(res, a))
+        else powerReq(a, b - 1, multiplication(res, a))
 
-      powerReq (a, b, res = 1)
+      powerReq(a, b, res = 1)
 
     val fermatNumber: Int => BigInt = n =>
-      if (n<0) throw IllegalArgumentException(s"Expected non-negative value, actual[$n]")
-      else power(2, power(2, n)) + 1
+      require(n >= 0, s"Expected non-negative value, actual[$n]")
+      power(2, power(2, n)) + 1
 
   end `Fermat Numbers`
 
-  object `Look-and-say Sequence` :
+  object `Look-and-say Sequence`:
     val lookAndSaySequenceElement: Int => BigInt = n =>
 
       @tailrec
-      def reverseWithTwoNumbers(number: BigInt, result : BigInt): BigInt=
-      {
+      def reverseWithTwoNumbers(number: BigInt, result: BigInt): BigInt = {
         if (number == 0) result
-        else reverseWithTwoNumbers(number/100, result*100+number.mod(100))
+        else reverseWithTwoNumbers(number / 100, result * 100 + number.mod(100))
       }
 
       @tailrec
-      def countDigites(number: BigInt, prev: Int, count: Int): Int={
-        if (number == 0)count
+      def countDigites(number: BigInt, prev: Int, count: Int): Int = {
+        if (number == 0) count
         else if (prev != number.mod(10).toInt) count
-        else countDigites(number/10, number.mod(10).toInt, count+1)
+        else countDigites(number / 10, number.mod(10).toInt, count + 1)
       }
 
       @tailrec
-      def generateNextNumber (number: BigInt, result : BigInt): BigInt =
-        {
-          if (number == 0) result
-          else
-            val c = countDigites(number,number.mod(10).toInt,count = 0)
-            generateNextNumber(number / BigInt(10).pow(c), (c*10+number.mod(10)*1)+result*100)
-        }
+      def generateNextNumber(number: BigInt, result: BigInt): BigInt = {
+        if (number == 0) result
+        else
+          val c = countDigites(number, number.mod(10).toInt, count = 0)
+          generateNextNumber(number / BigInt(10).pow(c), (c * 10 + number.mod(10) * 1) + result * 100)
+      }
 
       @tailrec
-      def lookAndSaySequenceElementReq(n:Int, now: BigInt): BigInt = {
+      def lookAndSaySequenceElementReq(n: Int, now: BigInt): BigInt = {
         if (n == 1) now
-        else lookAndSaySequenceElementReq(n-1, reverseWithTwoNumbers(generateNextNumber(now,result = 0),result = 0))
+        else lookAndSaySequenceElementReq(n - 1, reverseWithTwoNumbers(generateNextNumber(now, result = 0), result = 0))
       }
 
-      if (n <= 0) throw IllegalArgumentException(s"Expected non-negative value, actual[$n]")
-      else
-      {
-        lookAndSaySequenceElementReq(n, now = 1)
-      }
+      require(n > 0, s"Expected positive value, actual[$n]")
+      lookAndSaySequenceElementReq(n, now = 1)
 
   end `Look-and-say Sequence`
 

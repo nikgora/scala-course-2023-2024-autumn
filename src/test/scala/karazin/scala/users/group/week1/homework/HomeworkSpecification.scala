@@ -3,7 +3,7 @@ package karazin.scala.users.group.week1.homework
 import karazin.scala.users.group.week1.homework.Homework.*
 import karazin.scala.users.group.week1.homework.arbitraries
 import org.scalacheck.*
-import org.scalacheck.Prop.{forAll, propBoolean}
+import org.scalacheck.Prop.{forAll, propBoolean, throws}
 
 object HomeworkSpecification extends Properties("Homework"):
 
@@ -49,13 +49,15 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
-    if (n < 0) try {
-      fermatNumber(n)
-      false
-    } catch {
-      case e: IllegalArgumentException => true
+    val newN = Math.abs(n)
+    fermatNumber(newN) == BigInt(2).pow(BigInt(2).pow(newN).toInt) + 1
+  }
+
+  property("fermatNumber - Argument n should be non negative") = forAll { (n: Int) =>
+    throws(classOf[IllegalArgumentException]) {
+      val newN = if (n > 0) -Math.abs(n) else -1
+      fermatNumber(newN)
     }
-    else fermatNumber(n) == BigInt(2).pow(BigInt(2).pow(n).toInt) + 1
   }
 
 end FermatNumbersSpecification
@@ -67,7 +69,7 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
 
   import scala.annotation.tailrec
 
-
+  // https://rosettacode.org/wiki/Look-and-say_sequence#Scala
   @tailrec
   private def loop(n: Int, num: String): String = {
     if (n <= 0) num else loop(n - 1, lookandsay(num))
@@ -87,16 +89,16 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
     loop(number.tail + " ", number.head, 1)
   }
 
-
   property("lookAndSaySequenceElement") = forAll { (n: Int) =>
+    val newN = if (n < 0) Math.abs(n) else 1
+    lookAndSaySequenceElement(newN).toString() == loop(newN - 1, "1")
+  }
 
-    if (n <= 0) try {
-      lookAndSaySequenceElement(n)
-      false
-    } catch {
-      case e: IllegalArgumentException => true
+  property("lookAndSaySequenceElement - Argument n should be greater then zero") = forAll { (n: Int) =>
+    throws(classOf[IllegalArgumentException]) {
+      val newN = -Math.abs(n)
+      lookAndSaySequenceElement(newN)
     }
-    else lookAndSaySequenceElement(n).toString() == loop(n - 1, "1")
   }
 
 end LookAndSaySequenceSpecification
