@@ -1,6 +1,6 @@
 package karazin.scala.users.group.week2.homework
 
-import scala.annotation.targetName
+import scala.annotation.{tailrec, targetName}
 import scala.math.{abs, signum}
 
 object Homework:
@@ -10,10 +10,23 @@ object Homework:
     // Checking the precondition. Is fails then throws `IllegalArgumentException`
     require(y > 0, "Denominator must be positive")
 
-    def this(x: Int) = this(x, 1)
-
+    private lazy val g = gcd(abs(x), y)
     val numer = x / g
     val denom = y / g
+
+    def this(x: Int) = this(x, 1)
+
+    @targetName("greater than")
+    infix def >(that: Rational): Boolean =
+      !(this <= that)
+
+    @targetName("less or equal")
+    infix def <=(that: Rational): Boolean =
+      this < that || this == that
+
+    @targetName("greater or equal")
+    infix def >=(that: Rational): Boolean =
+      !(this < that)
 
     // Defines an external name for a definition
     @targetName("less than")
@@ -21,41 +34,37 @@ object Homework:
     infix def <(that: Rational): Boolean =
       this.numer * that.denom < that.numer * this.denom
 
-    @targetName("less or equal")
-    infix def <=(that: Rational): Boolean =
-      this < that || this == that
-
-    @targetName("greater than")
-    infix def >(that: Rational): Boolean =
-      !(this <= that)
-
-    @targetName("greater or equal")
-    infix def >=(that: Rational): Boolean =
-      !(this < that)
-
     @targetName("addition")
-    infix def +(that: Rational): Rational = ???
+    infix def +(that: Rational): Rational =
+      Rational(this.numer * that.denom + that.numer * this.denom, this.denom * that.denom)
 
     @targetName("negation")
-    infix def unary_- : Rational = ???
+    infix def unary_- : Rational = Rational(-this.numer, this.denom)
 
     @targetName("substraction")
-    infix def -(that: Rational): Rational = ???
+    infix def -(that: Rational): Rational =
+      Rational(this.numer * that.denom - that.numer * this.denom, this.denom * that.denom)
 
     @targetName("multiplication")
-    infix def *(that: Rational): Rational = ???
+    infix def *(that: Rational): Rational = Rational(this.numer * that.numer, this.denom * that.denom)
 
     @targetName("devision")
-    infix def /(that: Rational): Rational = ???
+    infix def /(that: Rational): Rational =
+      require(that.numer != 0, "division by zero")
+      Rational(this.numer * that.denom * Math.signum((this.denom * that.numer).toDouble).toInt, Math.abs(this.denom * that.numer))
 
     override def toString: String = s"${this.numer}/${this.denom}"
 
+    override def equals(other: Any): Boolean =
+      other match {
+        case that: Rational =>
+          this.numer.equals(that.numer) && this.denom.equals(that.denom)
+        case _ => false
+      }
+
+    @tailrec
     private def gcd(a: Int, b: Int): Int =
       if b == 0 then a else gcd(b, a % b)
-
-    private lazy val g = gcd(abs(x), y)
-
-    override def equals(other: Any): Boolean = ???
 
   end Rational
 
