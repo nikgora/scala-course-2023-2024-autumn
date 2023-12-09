@@ -58,7 +58,6 @@ object Homework:
     override def equals(other: Any): Boolean = other match
       case that: Rational =>
         that.canEqual(this) &&
-          g == that.g &&
           numer == that.numer &&
           denom == that.denom
       case _ => false
@@ -66,7 +65,7 @@ object Homework:
     private def canEqual(other: Any): Boolean = other.isInstanceOf[Rational]
 
     override def hashCode(): Int =
-      val state = Seq(g, numer, denom)
+      val state = Seq(numer, denom)
       state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
 
     @tailrec
