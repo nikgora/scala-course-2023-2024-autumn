@@ -55,12 +55,12 @@ object Homework:
 
     override def toString: String = s"${this.numer}/${this.denom}"
 
-    override def equals(other: Any): Boolean =
-      other match {
-        case that: Rational =>
-          this.numer.equals(that.numer) && this.denom.equals(that.denom)
-        case _ => false
-      }
+    override def equals(o: Any): Boolean = {
+      if (this == o) return true
+      if (!o.isInstanceOf[Rational]) return false
+      val other = o.asInstanceOf[Rational]
+      this.numer * other.denom == other.numer * this.denom
+    }
 
     @tailrec
     private def gcd(a: Int, b: Int): Int =
