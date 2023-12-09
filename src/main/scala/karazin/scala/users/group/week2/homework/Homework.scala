@@ -56,10 +56,11 @@ object Homework:
     override def toString: String = s"${this.numer}/${this.denom}"
 
     override def equals(o: Any): Boolean = {
-      if (this == o) return true
-      if (!o.isInstanceOf[Rational]) return false
-      val other = o.asInstanceOf[Rational]
-      this.numer * other.denom == other.numer * this.denom
+      if (this.eq(o.asInstanceOf[AnyRef])) true
+      else if (!o.isInstanceOf[Rational]) false
+      else
+        val other = o.asInstanceOf[Rational]
+        this.numer * other.denom == other.numer * this.denom
     }
 
     @tailrec
