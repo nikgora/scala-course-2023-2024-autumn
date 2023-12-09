@@ -29,7 +29,6 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
 
   property("check that and eager") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
-
     and(false, throw IllegalArgumentException("and not eager")) == (false && right)
   }
 

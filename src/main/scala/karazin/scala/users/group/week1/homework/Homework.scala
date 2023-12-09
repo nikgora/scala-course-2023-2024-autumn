@@ -15,7 +15,7 @@ import scala.annotation.tailrec
  * Requirements:
  * a) the function should not use embedded boolean operations
  * b) the functions should be eager
- * c) the function should use `if` expression and `true` and `false` boolean literals 
+ * c) the function should use `if` expression and `true` and `false` boolean literals
  *
  * 2. Fermat Numbers
  * Required task
@@ -45,11 +45,11 @@ object Homework:
       if (b) false
       else true // here is my greatest solution
 
-    def and: (Boolean, Boolean) => Boolean = (left, right) =>
+    def and (left: Boolean, right: => Boolean): Boolean = 
       if (left) right
       else false
 
-    def or: (Boolean, Boolean) => Boolean = (left, right) =>
+    def or (left: Boolean, right: => Boolean): Boolean  =
       if (left) true
       else right
 

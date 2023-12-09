@@ -26,8 +26,7 @@ object SuccSpecification extends Properties("Succ"):
 end SuccSpecification
 
 object NatSpecification extends Properties("Nat"):
- 
-  // Nat1 + Nat2 => ... 
+
+  // Nat1 + Nat2 => ...
 
 end NatSpecification
-  
