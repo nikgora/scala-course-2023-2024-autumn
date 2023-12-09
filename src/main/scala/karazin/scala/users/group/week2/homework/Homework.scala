@@ -55,13 +55,19 @@ object Homework:
 
     override def toString: String = s"${this.numer}/${this.denom}"
 
-    override def equals(o: Any): Boolean = {
-      if (this.eq(o.asInstanceOf[AnyRef])) true
-      else if (!o.isInstanceOf[Rational]) false
-      else
-        val other = o.asInstanceOf[Rational]
-        this.numer * other.denom == other.numer * this.denom
-    }
+    override def equals(other: Any): Boolean = other match
+      case that: Rational =>
+        that.canEqual(this) &&
+          g == that.g &&
+          numer == that.numer &&
+          denom == that.denom
+      case _ => false
+
+    private def canEqual(other: Any): Boolean = other.isInstanceOf[Rational]
+
+    override def hashCode(): Int =
+      val state = Seq(g, numer, denom)
+      state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
 
     @tailrec
     private def gcd(a: Int, b: Int): Int =
