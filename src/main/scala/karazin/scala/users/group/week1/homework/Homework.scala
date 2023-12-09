@@ -45,11 +45,11 @@ object Homework:
       if (b) false
       else true // here is my greatest solution
 
-    def and(left: Boolean, right: Boolean): Boolean =
+    def and: (Boolean, Boolean) => Boolean = (left, right) =>
       if (left) right
       else false
 
-    def or(left: Boolean, right: Boolean): Boolean =
+    def or: (Boolean, Boolean) => Boolean = (left, right) =>
       if (left) true
       else right
 
