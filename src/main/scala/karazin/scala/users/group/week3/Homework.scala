@@ -54,5 +54,16 @@ object Homework:
 
     override def toString: String = "Zero"
 
-    override def equals(obj: Any): Boolean = ???
+    override def equals(other: Any): Boolean = other match
+      case that: Zero =>
+        that.canEqual(this) &&
+          isZero == that.isZero
+      case _ => false
+
+    private def canEqual(other: Any): Boolean = other.isInstanceOf[Zero]
+
+    override def hashCode(): Int =
+      val state = Seq(isZero)
+      state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+
 
