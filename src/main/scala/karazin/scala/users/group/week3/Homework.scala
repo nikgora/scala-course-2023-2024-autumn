@@ -10,7 +10,7 @@ object Homework:
 
     def predecessor: Nat
 
-    def successor: Nat = ???
+    def successor: Nat = new Succ(this)
 
     infix def +(that: Nat): Nat
 
@@ -34,7 +34,9 @@ object Homework:
     infix def -(that: Nat): Nat = ???
 
     // Optional task
-    def toInt: Int = 0
+    def toInt: Int = ???
+
+    override def toString = s"Succ()"
 
     override def equals(obj: Any): Boolean = ???
 
@@ -43,12 +45,12 @@ object Homework:
 
     def predecessor: Nat = throw new Exception("0 doesn't have a predecessor")
 
-    infix def +(that: Nat): Nat = ???
+    infix def +(that: Nat): Nat = that
 
-    infix def -(that: Nat): Nat = ???
+    infix def -(that: Nat): Nat = throw new IllegalArgumentException("A NAT can't be negative")
 
     // Optional task
-    def toInt: Int = ???
+    def toInt: Int = 0
 
     override def toString: String = "Zero"
 
