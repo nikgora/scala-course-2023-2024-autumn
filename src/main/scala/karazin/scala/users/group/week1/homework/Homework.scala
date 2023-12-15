@@ -42,15 +42,15 @@ object Homework:
   object `Boolean Operators`:
 
     def not(b: Boolean): Boolean =
-      if (b) false
-      else true // here is my greatest solution
+      if b then false
+      else true
 
-    def and (left: Boolean, right: => Boolean): Boolean = 
-      if (left) right
+    def and(left: Boolean, right: => Boolean): Boolean =
+      if left then right
       else false
 
-    def or (left: Boolean, right: => Boolean): Boolean  =
-      if (left) true
+    def or(left: Boolean, right: => Boolean): Boolean =
+      if left then true
       else right
 
   end `Boolean Operators`
@@ -60,7 +60,7 @@ object Homework:
     val multiplication: (BigInt, BigInt) => BigInt = (a, b) =>
       @tailrec
       def multiplicationReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
-        if (b == 0) res
+        if b == 0 then res
         else multiplicationReq(a, b - 1, a + res)
 
       multiplicationReq(a, b, res = 0)
@@ -68,7 +68,7 @@ object Homework:
     val power: (BigInt, BigInt) => BigInt = (a, b) =>
       @tailrec
       def powerReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
-        if (b == 0) res
+        if b == 0 then res
         else powerReq(a, b - 1, multiplication(res, a))
 
       powerReq(a, b, res = 1)
@@ -84,20 +84,20 @@ object Homework:
 
       @tailrec
       def reverseWithTwoNumbers(number: BigInt, result: BigInt): BigInt = {
-        if (number == 0) result
+        if number == 0 then result
         else reverseWithTwoNumbers(number / 100, result * 100 + number.mod(100))
       }
 
       @tailrec
       def countDigites(number: BigInt, prev: Int, count: Int): Int = {
-        if (number == 0) count
+        if number == 0 then count
         else if (prev != number.mod(10).toInt) count
         else countDigites(number / 10, number.mod(10).toInt, count + 1)
       }
 
       @tailrec
       def generateNextNumber(number: BigInt, result: BigInt): BigInt = {
-        if (number == 0) result
+        if number == 0 then result
         else
           val c = countDigites(number, number.mod(10).toInt, count = 0)
           generateNextNumber(number / BigInt(10).pow(c), (c * 10 + number.mod(10) * 1) + result * 100)
@@ -105,7 +105,7 @@ object Homework:
 
       @tailrec
       def lookAndSaySequenceElementReq(n: Int, now: BigInt): BigInt = {
-        if (n == 1) now
+        if n == 1 then now
         else lookAndSaySequenceElementReq(n - 1, reverseWithTwoNumbers(generateNextNumber(now, result = 0), result = 0))
       }
 

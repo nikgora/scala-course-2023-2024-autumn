@@ -62,7 +62,7 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
 
   property("fermatNumber - Argument n should be non negative") = forAll { (n: Int) =>
     throws(classOf[IllegalArgumentException]) {
-      val newN = if (n > 0) -Math.abs(n) else -1
+      val newN = if n > 0 then -Math.abs(n) else -1
       fermatNumber(newN)
     }
   }
@@ -79,7 +79,7 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
   // https://rosettacode.org/wiki/Look-and-say_sequence#Scala
   @tailrec
   private def loop(n: Int, num: String): String = {
-    if (n <= 0) num else loop(n - 1, lookandsay(num))
+    if n <= 0 then num else loop(n - 1, lookandsay(num))
   }
 
   private def lookandsay(number: String): String = {
@@ -87,8 +87,8 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
 
     @tailrec
     def loop(numberString: String, repeat: Char, times: Int): String =
-      if (numberString.isEmpty) result.toString()
-      else if (numberString.head != repeat) {
+      if numberString.isEmpty then result.toString()
+      else if numberString.head != repeat then {
         result.append(times).append(repeat)
         loop(numberString.tail, numberString.head, 1)
       } else loop(numberString.tail, numberString.head, times + 1)
@@ -97,7 +97,7 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
   }
 
   property("lookAndSaySequenceElement") = forAll { (n: Int) =>
-    val newN = if (n < 0) Math.abs(n) else 1
+    val newN = if n < 0 then Math.abs(n) else 1
     lookAndSaySequenceElement(newN).toString() == loop(newN - 1, "1")
   }
 
