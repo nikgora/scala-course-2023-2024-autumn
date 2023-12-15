@@ -1,16 +1,20 @@
 package karazin.scala.users.group.week2.homework
 
+import karazin.scala.users.group.week2.arbitraries
+import karazin.scala.users.group.week2.arbitraries.restricted.{Integer, NegativeInteger, PositiveInteger, Zero}
 import karazin.scala.users.group.week2.homework.Homework.*
 import karazin.scala.users.group.week2.homework.arbitraries
 import karazin.scala.users.group.week2.homework.utils.*
 import org.scalacheck.*
 import org.scalacheck.Prop.{forAll, propBoolean, throws}
 
+import scala.language.implicitConversions
 import scala.math.*
 
 object HomeworkSpecification extends Properties("Homework"):
 
-  import arbitraries.{given Arbitrary[Int], given Arbitrary[Rational]}
+  import karazin.scala.users.group.week2.arbitraries.{given Arbitrary[Integer], given Arbitrary[NegativeInteger], given Arbitrary[PositiveInteger], given Arbitrary[Zero]}
+  import karazin.scala.users.group.week2.homework.arbitraries.{given Arbitrary[Int], given Arbitrary[Rational]}
 
   property("throw exception due to zero denominator") = forAll { (numer: Int) ⇒
     throws(classOf[IllegalArgumentException]) {
@@ -80,18 +84,19 @@ object HomeworkSpecification extends Properties("Homework"):
     res.numer * exceptedDenom == exceptedNumen * res.denom
   }
 
-  property("division") = forAll { (left: Rational, numer: Int, denom: Int) =>
-    val right = Rational(if numer == 0 then 1 else numer, abs(denom) + 1)
+  property("division") = forAll { (left: Rational, right: Rational) =>
+    val newRight = if right == Rational(0, 1) then 1 else right
     val res = left / right
     val gcdRat = Math.abs(gcd(left.numer * right.denom, left.denom * right.numer))
-    val exceptedNumen = (left.numer * right.denom) / gcdRat * Math.signum((right.numer * left.denom).toDouble)
+    val exceptedNumen = (left.numer * right.denom) / gcdRat * Math.signum((right.numer * left.denom).toDouble).toInt
     val exceptedDenom = Math.abs(right.numer * left.denom) / gcdRat
     res.numer * exceptedDenom == exceptedNumen * res.denom
   }
 
-  property("division by zero") = forAll { (left: Rational, int: Int) =>
+
+  property("division by zero") = forAll { (left: Rational, z: Zero) =>
     throws(classOf[IllegalArgumentException]) {
-      val res = left / Rational(0, int)
+      val res = left / Rational(z)
     }
   }
 
