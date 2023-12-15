@@ -58,7 +58,8 @@ object Homework:
     override def equals(other: Any): Boolean = other match
       case that: Rational =>
         that.canEqual(this) &&
-          numer == that.numer &&
+          hashCode() == that.hashCode()
+            numer == that.numer &&
           denom == that.denom
       case _ => false
 
