@@ -12,8 +12,6 @@ object Homework:
 
     def predecessor: Nat
 
-    def successor: Nat = new Succ(this)
-
     infix def +(that: Nat): Nat
 
     infix def -(that: Nat): Nat
@@ -22,22 +20,38 @@ object Homework:
     def toInt: Int
 
     // Optional task
-    def fromInt(int: Int) =
-      @tailrec()
-      def fromIntRec(int: Int,  suc: Nat):Nat =
-        if (int == 0) suc
-        else fromIntRec(int-1, successor)
+    def fromInt(int: Int): Nat =
+      require(int >= 0, s"Argument can`t be negative, actual [$int]")
 
-      fromIntRec(int, Zero)
+      @tailrec
+      def fromIntRec(int: Int, acc: Nat): Nat =
+        if int == 0 then acc
+        else fromIntRec(int - 1, acc.successor)
+
+      fromIntRec(int, acc = this)
+
+    def successor: Nat = new Succ(this)
+
     override def toString: String = s"Nat($predecessor)"
 
   class Succ(n: Nat) extends Nat:
-    infix def +(that: Nat): Nat = ???
+    infix def +(that: Nat): Nat =
+      if that.isZero then this
+      else n + that.successor
 
-    infix def -(that: Nat): Nat = ???
+    infix def -(that: Nat): Nat =
+      if that.toInt > this.toInt then throw new Exception("Negative result in Peano numbers")
+      else if that.isZero then this
+      else n - that.predecessor
 
     // Optional task
-    def toInt: Int = 1 + predecessor.toInt
+    def toInt: Int =
+      @tailrec
+      def toIntRec(nat: Nat, acc: Int): Int =
+        if nat.isZero then acc
+        else toIntRec(nat.predecessor, acc + 1)
+
+      toIntRec(this, acc = 0)
 
     override def toString = s"Succ()"
 
@@ -55,9 +69,9 @@ object Homework:
       val state = Seq(isZero, predecessor)
       state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
 
-    def isZero: Boolean = false
-
     def predecessor: Nat = n
+
+    def isZero: Boolean = false
 
   object Zero extends Nat:
     def predecessor: Nat = throw new Exception("0 doesn't have a predecessor")
@@ -78,10 +92,10 @@ object Homework:
           isZero == that.isZero
       case _ => false
 
-    def isZero: Boolean = true
-
     private def canEqual(other: Any): Boolean = other.isInstanceOf[Zero]
 
     override def hashCode(): Int =
       val state = Seq(isZero)
       state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
+
+    def isZero: Boolean = true
