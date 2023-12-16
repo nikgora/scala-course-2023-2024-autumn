@@ -1,6 +1,7 @@
 package karazin.scala.users.group.week1.homework
 
 import scala.annotation.tailrec
+
 /**
  * Preface
  * Implement all the things with ???.
@@ -14,7 +15,7 @@ import scala.annotation.tailrec
  * Requirements:
  * a) the function should not use embedded boolean operations
  * b) the functions should be eager
- * c) the function should use `if` expression and `true` and `false` boolean literals 
+ * c) the function should use `if` expression and `true` and `false` boolean literals
  *
  * 2. Fermat Numbers
  * Required task
@@ -36,32 +37,83 @@ import scala.annotation.tailrec
  * For more details @see https://en.wikipedia.org/wiki/Kolakoski_sequence
  */
 
-object Homework :
+object Homework:
 
-  object `Boolean Operators` :
+  object `Boolean Operators`:
 
-    val int = 42
+    def not(b: Boolean): Boolean =
+      if b then false
+      else true
 
-    def not(b: Boolean): Boolean = ??? // here is my greatest solution
+    def and(left: Boolean, right: => Boolean): Boolean =
+      if left then right
+      else false
 
-    def and(left: Boolean, right: Boolean): Boolean = ???
+    def or(left: Boolean, right: => Boolean): Boolean =
+      if left then true
+      else right
 
-    def or(left: Boolean, right: Boolean): Boolean = ???
 
   end `Boolean Operators`
 
-  object `Fermat Numbers` :
+  object `Fermat Numbers`:
 
-    val multiplication: (BigInt, BigInt) => BigInt = ???
 
-    val power: (BigInt, BigInt) => BigInt = ???
+    val multiplication: (BigInt, BigInt) => BigInt = (a, b) =>
+      @tailrec
+      def multiplicationReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
+        if b == 0 then res
+        else multiplicationReq(a, b - 1, a + res)
 
-    val fermatNumber: Int => BigInt = ???
+      multiplicationReq(a, b, res = 0)
+
+    val power: (BigInt, BigInt) => BigInt = (a, b) =>
+      @tailrec
+      def powerReq(a: BigInt, b: BigInt, res: BigInt): BigInt =
+        if b == 0 then res
+        else powerReq(a, b - 1, multiplication(res, a))
+
+      powerReq(a, b, res = 1)
+
+    val fermatNumber: Int => BigInt = n =>
+      require(n >= 0, s"Expected non-negative value, actual[$n]")
+      power(2, power(2, n)) + 1
+
 
   end `Fermat Numbers`
 
-  object `Look-and-say Sequence` :
-    val lookAndSaySequenceElement: Int => BigInt = ???
+  object `Look-and-say Sequence`:
+    val lookAndSaySequenceElement: Int => BigInt = n =>
+
+      @tailrec
+      def reverseWithTwoNumbers(number: BigInt, result: BigInt): BigInt = {
+        if number == 0 then result
+        else reverseWithTwoNumbers(number / 100, result * 100 + number.mod(100))
+      }
+
+      @tailrec
+      def countDigites(number: BigInt, prev: Int, count: Int): Int = {
+        if number == 0 then count
+        else if (prev != number.mod(10).toInt) count
+        else countDigites(number / 10, number.mod(10).toInt, count + 1)
+      }
+
+      @tailrec
+      def generateNextNumber(number: BigInt, result: BigInt): BigInt = {
+        if number == 0 then result
+        else
+          val c = countDigites(number, number.mod(10).toInt, count = 0)
+          generateNextNumber(number / BigInt(10).pow(c), (c * 10 + number.mod(10) * 1) + result * 100)
+      }
+
+      @tailrec
+      def lookAndSaySequenceElementReq(n: Int, now: BigInt): BigInt = {
+        if n == 1 then now
+        else lookAndSaySequenceElementReq(n - 1, reverseWithTwoNumbers(generateNextNumber(now, result = 0), result = 0))
+      }
+
+      require(n > 0, s"Expected positive value, actual[$n]")
+      lookAndSaySequenceElementReq(n, now = 1)
 
   end `Look-and-say Sequence`
 
