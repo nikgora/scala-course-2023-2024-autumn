@@ -84,8 +84,24 @@ object HomeworkSpecification extends Properties("Homework"):
     res.numer * exceptedDenom == exceptedNumen * res.denom
   }
 
-  property("division") = forAll { (left: Rational, right: Rational) =>
-    val newRight = if right == Rational(0, 1) then 1 else right
+  property("division for positive") = forAll { (left: Rational, numer: PositiveInteger, denom: PositiveInteger) =>
+    val right = Rational(numer, denom)
+    val res = left / right
+    val gcdRat = Math.abs(gcd(left.numer * denom, left.denom * numer))
+    val exceptedNumen = (left.numer * denom) / gcdRat * Math.signum((numer * left.denom).toDouble).toInt
+    val exceptedDenom = Math.abs(numer * left.denom) / gcdRat
+    res.numer * exceptedDenom == exceptedNumen * res.denom
+  }
+  property("division for negative") = forAll { (left: Rational, numer: NegativeInteger, denom: PositiveInteger) =>
+    val right = Rational(numer, denom)
+    val res = left / right
+    val gcdRat = Math.abs(gcd(left.numer * denom, left.denom * numer))
+    val exceptedNumen = (left.numer * denom) / gcdRat * Math.signum((numer * left.denom).toDouble).toInt
+    val exceptedDenom = Math.abs(numer * left.denom) / gcdRat
+    res.numer * exceptedDenom == exceptedNumen * res.denom
+  }
+  property("division by rational") = forAll { (left: Rational, right: Rational) =>
+    val newRight = if right == Rational(0, 1) then Rational(1, 1) else right
     val res = left / right
     val gcdRat = Math.abs(gcd(left.numer * right.denom, left.denom * right.numer))
     val exceptedNumen = (left.numer * right.denom) / gcdRat * Math.signum((right.numer * left.denom).toDouble).toInt
