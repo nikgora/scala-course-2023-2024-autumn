@@ -92,6 +92,7 @@ object HomeworkSpecification extends Properties("Homework"):
     val exceptedDenom = Math.abs(numer * left.denom) / gcdRat
     res.numer * exceptedDenom == exceptedNumen * res.denom
   }
+
   property("division for negative") = forAll { (left: Rational, numer: NegativeInteger, denom: PositiveInteger) =>
     val right = Rational(numer, denom)
     val res = left / right
@@ -100,6 +101,7 @@ object HomeworkSpecification extends Properties("Homework"):
     val exceptedDenom = Math.abs(numer * left.denom) / gcdRat
     res.numer * exceptedDenom == exceptedNumen * res.denom
   }
+
   property("division by rational") = forAll { (left: Rational, right: Rational) =>
     val newRight = if right == Rational(0, 1) then Rational(1, 1) else right
     val res = left / right
