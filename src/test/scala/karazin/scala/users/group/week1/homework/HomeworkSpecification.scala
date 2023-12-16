@@ -18,13 +18,15 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   import `Boolean Operators`.*
 
   property("not") = forAll { (b: Boolean) =>
-    not(b) == (!b)
+    not(b) == !b
   }
 
   property("and") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
 
+
     and(left, right) == (left && right)
+
   }
 
   property("check that and eager") = propBoolean {
@@ -34,10 +36,12 @@ object BooleanOperatorsSpecification extends Properties("Boolean Operators"):
   property("or") = forAll { (pair: (Boolean, Boolean)) =>
     val (left, right) = pair
 
+
     or(left, right) == (left || right)
   }
   property("check that or eager") = propBoolean {
     or(true, throw IllegalArgumentException("or not eager")) == true
+
   }
 
 end BooleanOperatorsSpecification
@@ -56,6 +60,7 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
   }
 
   property("fermatNumber") = forAll { (n: Int) =>
+
     val newN = Math.abs(n)
     fermatNumber(newN) == BigInt(2).pow(BigInt(2).pow(newN).toInt) + 1
   }
@@ -65,6 +70,7 @@ object FermatNumbersSpecification extends Properties("Fermat Numbers"):
       val newN = if n > 0 then -Math.abs(n) else -1
       fermatNumber(newN)
     }
+
   }
 
 end FermatNumbersSpecification
@@ -109,3 +115,4 @@ object LookAndSaySequenceSpecification extends Properties("Look-and-say Sequence
   }
 
 end LookAndSaySequenceSpecification
+

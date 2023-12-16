@@ -53,9 +53,11 @@ object Homework:
       if left then true
       else right
 
+
   end `Boolean Operators`
 
   object `Fermat Numbers`:
+
 
     val multiplication: (BigInt, BigInt) => BigInt = (a, b) =>
       @tailrec
@@ -76,6 +78,7 @@ object Homework:
     val fermatNumber: Int => BigInt = n =>
       require(n >= 0, s"Expected non-negative value, actual[$n]")
       power(2, power(2, n)) + 1
+
 
   end `Fermat Numbers`
 
