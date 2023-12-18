@@ -24,15 +24,19 @@ object Homework:
     infix def <=(that: Rational): Boolean =
       this < that || this == that
 
-    @targetName("greater or equal")
-    infix def >=(that: Rational): Boolean =
-      !(this < that)
-
     // Defines an external name for a definition
     @targetName("less than")
     // Annotation on a method definition allows using the method as an infix operation
     infix def <(that: Rational): Boolean =
       this.numer * that.denom < that.numer * this.denom
+
+    @targetName("greater or equal")
+    infix def >=(that: Rational): Boolean =
+      !(this < that)
+
+    @targetName("substraction")
+    infix def -(that: Rational): Rational =
+      this + (-that)
 
     @targetName("addition")
     infix def +(that: Rational): Rational =
@@ -40,10 +44,6 @@ object Homework:
 
     @targetName("negation")
     infix def unary_- : Rational = Rational(-this.numer, this.denom)
-
-    @targetName("substraction")
-    infix def -(that: Rational): Rational =
-      Rational(this.numer * that.denom - that.numer * this.denom, this.denom * that.denom)
 
     @targetName("multiplication")
     infix def *(that: Rational): Rational = Rational(this.numer * that.numer, this.denom * that.denom)
@@ -59,7 +59,7 @@ object Homework:
       case that: Rational =>
         that.canEqual(this) &&
           hashCode() == that.hashCode()
-            numer == that.numer &&
+        numer == that.numer &&
           denom == that.denom
       case _ => false
 
