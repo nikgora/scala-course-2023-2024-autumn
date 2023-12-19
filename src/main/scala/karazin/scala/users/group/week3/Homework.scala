@@ -53,7 +53,9 @@ object Homework:
 
       toIntRec(this, acc = 0)
 
-    override def toString = s"Succ()"
+    override def toString = s"Succ($predecessor)"
+
+    def predecessor: Nat = n
 
     override def equals(other: Any): Boolean = other match
       case that: Succ =>
@@ -69,8 +71,6 @@ object Homework:
       val state = Seq(isZero, predecessor)
       state.map(_.hashCode()).foldLeft(0)((a, b) => 31 * a + b)
 
-    def predecessor: Nat = n
-
     def isZero: Boolean = false
 
   object Zero extends Nat:
@@ -78,7 +78,9 @@ object Homework:
 
     infix def +(that: Nat): Nat = that
 
-    infix def -(that: Nat): Nat = throw new IllegalArgumentException("A NAT can't be negative")
+    infix def -(that: Nat): Nat =
+      if that.isZero then this
+      else throw new IllegalArgumentException("A NAT can't be negative")
 
     // Optional task
     def toInt: Int = 0
