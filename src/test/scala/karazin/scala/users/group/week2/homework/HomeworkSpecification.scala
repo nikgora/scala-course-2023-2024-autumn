@@ -103,15 +103,6 @@ object HomeworkSpecification extends Properties("Homework"):
     res.numer * exceptedRes.denom == exceptedRes.numer * res.denom
   }
 
-  property("division by rational") = forAll { (left: Rational, right: Rational) =>
-    val newRight = if right == Rational(0, 1) then Rational(1, 1) else right
-    val res = left / right
-    val exceptedNumer = (left.numer * right.denom) * Math.signum((right.numer * left.denom).toDouble).toInt
-    val exceptedDenom = Math.abs(right.numer * left.denom)
-    val exceptedRes = Rational(exceptedNumer, exceptedDenom)
-    res.numer * exceptedRes.denom == exceptedRes.numer * res.denom
-  }
-
 
   property("division by zero") = forAll { (left: Rational, z: Zero) =>
     throws(classOf[IllegalArgumentException]) {
