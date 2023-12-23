@@ -102,8 +102,7 @@ object HomeworkSpecification extends Properties("Homework"):
     val exceptedRes = Rational(exceptedNumer, exceptedDenom)
     res.numer * exceptedRes.denom == exceptedRes.numer * res.denom
   }
-
-
+  
   property("division by zero") = forAll { (left: Rational, z: Zero) =>
     throws(classOf[IllegalArgumentException]) {
       val res = left / Rational(z)
