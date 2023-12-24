@@ -78,7 +78,7 @@ object ZeroSpecification extends Properties("Zero"):
   }
 
   property("minus of two Zero") = forAll { (left: Zero, right: Zero) =>
-    (left - right).equals(subtraction(left, right))
+    (left - right) == subtraction(left, right)
   }
 
   property("Zero minus Peano number") = forAll { (left: Zero, right: Succ) =>
@@ -88,11 +88,11 @@ object ZeroSpecification extends Properties("Zero"):
   }
 
   property("zero plus Peano number is Peano number") = forAll { (zero: Zero, num: Nat) =>
-    (zero + num).equals(num)
+    (zero + num) == num
   }
 
   property("successor of zero is one") = forAll { (zero: Zero) =>
-    zero.successor.equals(Succ(zero))
+    zero.successor == Succ(zero)
   }
 
   property("throwing exception due zero.predecessor") = forAll { (zero: Zero) =>
@@ -136,29 +136,29 @@ object SuccSpecification extends Properties("Succ"):
   }
 
   property("commutative of addition testing") = forAll { (succ: Succ, num: Nat) =>
-    (succ + num).equals(addition(succ, num)) && (num + succ).equals(addition(succ, num))
+    (succ + num)==addition(succ, num) && (num + succ)==addition(succ, num)
   }
 
   property("Succ addition is the same as successor") = forAll { (num1: Succ, num2: Succ) =>
-    num1.successor.equals(num1 + Succ(Zero)) && num2.successor.equals(num2 + Succ(Zero))
+    num1.successor==num1 + Succ(Zero) && num2.successor==num2 + Succ(Zero)
   }
 
   property("Succ subtraction") = forAll { (succ: Succ, num: Nat) =>
-    if succ.toInt < num.toInt then (num - succ).equals(subtraction(num, succ))
-    else (succ - num).equals(subtraction(succ, num))
+    if succ.toInt < num.toInt then (num - succ)==subtraction(num, succ)
+    else (succ - num)==subtraction(succ, num)
   }
 
   property("Succ subtraction Zero") = forAll { (succ: Succ, num: Zero) =>
-    (succ - num).equals(succ)
+    (succ - num)==succ
   }
 
   property("Succ subtraction Succ") = forAll { (succ: Succ, num: Succ) =>
-    if succ.toInt < num.toInt then (num - succ).equals(subtraction(num, succ))
-    else (succ - num).equals(subtraction(succ, num))
+    if succ.toInt < num.toInt then (num - succ)==subtraction(num, succ)
+    else (succ - num)==subtraction(succ, num)
   }
 
   property("Succ subtraction and getting negative result") = forAll { (succ: Succ, num: Nat) =>
-    if succ.equals(num) then true
+    if succ==num then true
     else if succ.toInt < num.toInt
     then throws(classOf[Exception]) {
         succ - num
@@ -206,24 +206,24 @@ object NatSpecification extends Properties("Nat"):
   }
 
   property("addition is commutative") = forAll { (a: Nat, b: Nat) =>
-    (a + b).equals(b + a) == equality(addition(a, b), addition(b, a))
+    ((a + b)==(b + a)) == equality(addition(a, b), addition(b, a))
   }
 
   property("addition is associative") = forAll { (a: Nat, b: Nat, c: Nat) =>
-    ((a + b) + c).equals(a + (b + c)) == equality(addition(addition(a, b), c), addition(addition(c, b), a))
+    ((a + b) + c)==(a + (b + c)) == equality(addition(addition(a, b), c), addition(addition(c, b), a))
   }
 
   property("subtraction undoes addition") = forAll { (a: Nat, b: Nat) =>
-    (a + b - b).equals(a) && (b + a - a).equals(b) == equality(subtraction(addition(a, b), b), a) && equality(subtraction(addition(a, b), a), b)
+    (a + b - b)==a && (b + a - a)==b == equality(subtraction(addition(a, b), b), a) && equality(subtraction(addition(a, b), a), b)
   }
 
   property("Nat subtraction") = forAll { (num1: Nat, num2: Nat) =>
-    if num1.toInt < num2.toInt then (num2 - num1).equals(subtraction(num2, num1))
-    else (num1 - num2).equals(subtraction(num1, num2))
+    if num1.toInt < num2.toInt then (num2 - num1)==subtraction(num2, num1)
+    else (num1 - num2)==subtraction(num1, num2)
   }
 
   property("Nat subtraction and getting negative result") = forAll { (num1: Nat, num2: Nat) =>
-    if num1.equals(num2) then true
+    if num1==num2 then true
     else if num1.toInt < num2.toInt
     then throws(classOf[Exception]) {
         num1 - num2
